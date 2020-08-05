@@ -1,0 +1,26 @@
+live_loop :hh do
+  puts beat
+  i = 0
+  2.times do |x|
+    density 2 do |y|
+      in_thread do
+        density 2 do
+          2.times do
+            sample :drum_cymbal_closed
+            sleep 1
+          end
+        end
+      end
+      z = (y+x)==2 ? 2 : 1
+      
+      density z*2-1 do
+        sample :bd_boom, beat_stretch:z*2-(x+y)
+        sleep 1
+      end
+      density z do
+        sample :sn_dolf
+        sleep 1
+      end
+    end
+  end
+end

@@ -1,0 +1,69 @@
+use_bpm 60
+define :bss1 do |n: :e1|
+  a = nil
+  b = nil
+  ##| puts n
+  ##| puts n.class
+  ##| puts n.length
+  
+  amp = n.class==Integer ? 1 : n.length+1
+  ##| puts amp
+  with_fx :flanger, decay:0.1,delay:0.1, depth:4,invert_wave:1, pulse_width:0.2  do
+    a = synth :tri , note: n, amp: amp,
+      cutoff:80, env_curve:2,
+      attack:0, decay:0.5,decay_level:1, sustain_level:0.5,release:0.5
+    
+    b = synth :square , note: n,
+      cutoff:80, env_curve: 7, amp: amp,
+      attack:0.25, sustain_level:1, decay:0.25 , release:0.1
+  end
+  return [a,b]
+end
+sk1 = chord( :E1, :minor7 )
+sk2 = chord( :A1, :minor)
+
+live_loop :mld do
+  ##| sync "/live_loop/hh"
+  puts beat
+  2.times do
+    puts beat
+    2.times do
+      puts beat
+      use_random_seed 666
+      
+      a = bss1 n:(chord( sk1.tick , :minor ))
+      a.each { |x|
+        sleep 0.5
+        x.control note:sk1.choose, slide_amp:5, slide_sustain:0.75, slide_attack:0, slide:0.5
+      }
+      sleep 0.5
+      bss1 n:sk2.look
+      sleep 0.5
+      density 2 do
+        2.times{
+          bss1 n:sk2.choose
+          sleep 0.5
+        }
+      end
+    end
+  end
+end
+live_loop :hh do
+  puts beat
+  density 2 do
+    in_thread do
+      density 2 do
+        4.times do
+          sample :drum_cymbal_closed
+          sleep 1
+        end
+      end
+    end
+    sample :bd_zome
+    sleep 1
+    
+    sample :sn_dolf
+    sleep 1
+  end
+end
+
