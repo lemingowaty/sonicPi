@@ -7,7 +7,7 @@ end
 ##| use_synth :tr
 notes = [ git(0,5) ]
 notes.push( notes[0]+5 , notes[0]+6 , git(1,5) )
-notes.push( notes[1]-5, notes[0]+7 , notes[1]-3 , git(1,2) )
+notes.push( notes[1]-5, notes[0]+7 , notes[1]-3 , git(1,2) ) # Creative process...
 puts notes
 live_loop :doopa , sync: "/live_loop/stopa" do
   density 2 do |n|
