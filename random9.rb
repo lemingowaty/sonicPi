@@ -84,12 +84,31 @@ live_loop :bd9 , sync: :hh9 do
 end
 
 live_loop :sn9, sync: "/live_loop/hh9" do
-  4.times do |mt|
-    density ((mt+1)%4==0 ? 2 : 1) do |t|
-      sample :bd_tek, pitch:t*7
-      sleep 1
+  4.times do |ms|
+    4.times do |mt|
+      density ((mt+1)%2==0 ? 2 : 1) do |t|
+        sample :bd_tek, beat_stretch: 1 - (t*0.5)
+        sleep 1
+      end
+      
+      sample :sn_generic
+      if ms>=2
+        case mt
+        when 2
+          sleep 0.25
+          sample :sn_generic
+          sleep 0.75
+          
+        when 1
+          sleep 0.75
+          sample :sn_generic
+          sleep 0.25
+        else
+          sleep 1
+        end
+      else
+        sleep 1
+      end
     end
-    sample :sn_dolf, amp: 0.25
-    sleep 1
   end
 end
