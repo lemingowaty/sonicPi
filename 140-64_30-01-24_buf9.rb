@@ -1,3 +1,4 @@
+# https://soundcloud.com/lemingowaty/140-64-30-01-24-buf9
 sampledir = "C:/Users/lemin/Music/G6_Looper/"
 
 sample1 = sampledir+"01-24_L107_140_64.wav"
